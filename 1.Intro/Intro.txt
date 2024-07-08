@@ -1,0 +1,49 @@
+Reference : https://www.freecodecamp.org/news/learn-react-key-concepts/
+
+# React:
+- js library for building web app user interfaces
+- can create a quick and scalable web app by breaking the UI down into smaller components
+
+# Installing with vite:
+- npm create vite@latest app_name
+- npm install for node modules
+
+# key concepts to understand
+
+1. React components:
+- a set of react elements that browser returns which appears on the computer screen
+- in react a webpage can be divided into multiple components that make up the entire elements on the screen
+- react splits the UI into independent and reusable pieces(components). 
+- each component name must start with a capital letter which makes them readable
+- have their own styles, APIs, logic and structures
+- two types:
+    1. class or stateful components:
+        - this method of creating react component is considered outdated(not recommended)
+        - declared using the js "class" keyword
+        - called stateful because the variables within the components are linked to them using the js "this" keyword
+        - example:
+        import React, { Component } from 'react';
+
+        class HelloWorld extends Component {
+        constructor(props) {
+            super(props);
+            // Initialize state
+            this.state = {
+            greeting: 'Hello, World!'
+            };
+        }
+
+        render() {
+            return (
+            <div>
+                <h1>{this.state.greeting}</h1>
+            </div>
+            );
+        }
+        }
+
+    2. Functional Components(Stateless)
+    - modern way of writing react
+    - follows the js ES6 method of writing functions
+    - accepts a single argument known as props(object data), mostly returned with a jsx elements
+    - are declared similarly to js functions but difference is that components accepts props and render jsx elements

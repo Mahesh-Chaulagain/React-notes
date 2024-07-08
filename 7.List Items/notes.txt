@@ -1,0 +1,39 @@
+# List items
+-> to display list items on a webpage- for example data received from an API endpoint, react uses the js function 'array.map()'.
+-> 'array.map()' function accepts two arguments: the list item and its position within the array. so you can set the key prop to the
+    index (item position) to enable react to distinguish each item from the others
+-> the key prop optimizes the react's performance and is useful for performing CRUD operations with list items
+-> example:
+    // working with to-do list that enables users to create and delete to-do items
+    export default function App(){
+    const [todoList, setTodoList] = useState([]);
+    const [todo, setTodo] = useState("");
+
+    const handleSubmit = (e) => {
+        e.preventDefault();     //prevents the default action of the form (which is to refresh the page).
+        setTodoList([...todoList, { todo, id: Math.random() * 1000}]); //updates our todoList by adding a new object representing our task. The object contains the task (todo) and a random id
+        setTodo("");    //resets the todo to an empty string after adding the task
+    };
+
+    const handleDelete = (id) => {
+        const newTodoList = todoList.filter((item) => item.id !== id);
+        setTodoList(newTodoList);
+    };
+    return(
+        <div>
+            <h1>Todo List</h1>
+            <form action="" onSubmit={handleSubmit}>
+                <input type="text" name="todo" id="todo" value={todo} onChange={(e) => setTodo(e.target.value)} required />
+                <button type="submit">Add todo</button>
+            </form>
+            <div>
+                {todoList.map((item) => (
+                    <div key={item.id}>
+                        <p>{item.todo}</p>
+                        <button onClick={() => handleDelete(item.id)}>Delete</button>
+                    </div>
+                ))}
+            </div>
+        </div>
+    )
+    }

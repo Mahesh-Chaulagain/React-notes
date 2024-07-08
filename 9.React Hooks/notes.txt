@@ -1,0 +1,77 @@
+# React Hooks
+-> critical feature of React
+-> in class components we encounter some problems:
+    - we have to take care of Auto-binding and "this"
+    - the code gets lenthier and several lifecycle methods are hard to follow
+    - it is hard to share logic and reuse components
+-> to solve all to these above mentioned problems hooks was created
+-> some hooks are:
+    1. useState hook
+    - used for creating a state variables
+    - enables us to create and change state variables within our components
+    - useState returns a pair of values. first one is the current state and the second is the function that updates it
+    i.e const[value, setValue] = useState(<initial value>)
+    
+    2. useEffect hook
+    - hook that enables us to perform actions when various changes occur within a React component, such as data fetching, wehn a 
+        component renders and so one
+    - accepts two parameters: function and a dependency array. the function is executed depending on the conditions within the dependency
+        array
+    - three ways you can use useEffect hooks
+        1. without a dependency array 
+        - will run every time the component re-renders due to an event or state change
+        - should not use the useEffect hook this way because it leads tto performance issues
+
+        2. with an empty dependency array
+        - means that the function within the useEffect function should run only once - when the component mounts or is loaded on the 
+            web page
+        - mostly used when you need to fetch data from an API endpoint and display it on the web page when it loads
+
+        3. with a dependency array containing values
+        - dependency array contains values that the function depends on
+        - the function runs when the component is rendered and when the value of variable within the array changes 
+
+        export default function Counter() {
+        const [count, setCount] = useState(0);
+
+        const increment = () => setCount( prev => prev + 1)
+        const decrement = () => setCount( prev => prev - 1)
+
+        // // without a dependency array
+        // useEffect(() => {
+        //     console.log("Run everytime count changes");
+        // });
+
+        // // with an empty dependency array
+        // useEffect(() => {
+        //     console.log("Run only once when component is mounted");
+        // },[]);
+        
+        // with a dependency array containing values
+        useEffect(() => {
+            console.log("useEffect runs when the count changes");
+        }, [count]);
+        return (
+            <div>
+                <h1>Count: {count}</h1>
+                <div>
+                    <button onClick={increment}>Increase</button>
+                    <button onClick={decrement}>Decrease</button>
+                </div>
+            </div>
+        );
+    }
+
+    3. useReducer hook
+    - used in components that have a large number of states and multiple event handlers
+    - enables you to manage complex states within your application
+    - use useState hook when there are few states within your components. use useReducer when you have a lot of states to manage
+    - divided into four parts: the state, the reducer function, the action and the dispatch functionie.
+    i.e const [state, dispatch] = useReducer(reducerFunction, {states});
+
+        - the state is an object containing all the states declares within the application
+        - reducer function manipulates the state directly and returns a copy of the result, and the dispatch function triggers the reducer
+        function when an event occurs
+        - the action is the object containing a type and a payload property
+        - the type proprety specifies the exact action to be executed by the reducer function and the payload can accept data from the 
+            user or other parts of the application

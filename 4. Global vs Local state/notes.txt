@@ -1,0 +1,30 @@
+# Global State
+-> refers to state values used in multiple components within the application.
+-> in some cases, they can be updated anywhere within the application
+-> example is changing dark to light mode where all the components change color
+    const App = () => {
+    const [darkMode, setDarkMode] = useState(false);
+    return (
+        <div>
+            <Home darkMode={darkMode} />
+            <Profile darkMode={darkMode} setDarkMode={setDarkMode}/>
+        </div>
+        );
+    };
+    export default App
+
+# Local State
+-> state variables bound to a component
+-> example
+    const Profile = () => {
+     const[name, setName] = useState("Ramesh");
+     const toggleName = () => setName("Hira");
+
+     return(
+        <div>
+            <h1>hi i'm {name}</h1>
+            <button onClick={toggleName}>toggle name</button>
+        </div>
+     )
+    }
+    export default Profile

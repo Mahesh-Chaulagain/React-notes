@@ -1,0 +1,316 @@
+1. Use Constants 
+- constants are simply js objects with key/values
+- in js, declare constants by using 'const' keyword
+- constants helps us avoid re-declaring the same value
+- great choice for storing API keys
+- start with declaring the object with a name which reflects the content it's holding, as these are strings use quotes to wrap them
+- before exporting the messages, do an Object.freeze() which will avoid any accidental value change from outside any key
+- e.g.
+    // constants.js or en.js
+    const MESSAGES = { 
+        'HEADING': 'welcome to the website',
+        'ENTER_YOUR_NAME': 'Enter user name',
+        'HOME': [{
+            'HEADING': 'welcome to the home'
+        }]
+    }
+
+    Object.freeze(MESSAGES);
+
+    export default MESSAGES;
+
+    // using constants.js in component
+    import MESSAGES from "./constants";
+
+    const Home = () => {
+        return(
+            <p>{MESSAGES.HEADING}</p>
+        )
+    }
+
+    export default Home;
+
+
+
+2. use Helpers/ Utils
+- responsible for performing a task that can be used in multiple places and by multiple devs
+- example include Date format, string formation, API call code, and DOM manipulation to name a few
+- why use helpers/utils? - every component should be responsible for only one job
+    It results in cleaner components and cleaner code
+    No tight coupling
+    Easily scalable functionality
+    Easy to maintain and debug
+    Better reusability
+    Components are now responsible only for the UI
+
+- e.g.
+    // dateUtils.js: moved the formatDate to a separate util to have reusability
+
+    export function formatDate(date){
+        const options = {year: 'numeric', month: 'long', day:'numeric'};
+        return new Date(date).toLocaleDateString(undefined, options);
+    }
+
+    // updated Blogs.jsx component after util 
+    import { formatDate } from "./dateUtils";
+
+    const Blog = ({title, content, date}) => {
+        return(
+            <div>
+                <h2>{title}</h2>
+                <p>{content}</p>
+                <p>published on: {formatDate(date)}</p>
+            </div>
+        )
+    }
+
+    export default Blog;
+
+
+
+
+3. Destructure props in component argument
+- to communicate between components in reactjs, we use props
+- e.g 
+    // instead of
+    const Input = (props) => {
+    return <input 
+    type={props.type} 
+    placeholder={props.placeholder} 
+    name={props.name} 
+    className="block p-2 my-2 text-black" 
+    onChange={props.changeHandler}/>
+    }
+
+    export default Input;
+
+    //use js destructuring assignment
+    const Input = (props) => {
+    const { type, placeholder, name, changeHandler } = props;
+    return <input 
+    type={type} 
+    placeholder={placeholder} 
+    name={name} 
+    className="block p-2 my-2 text-black" 
+    onChange={changeHandler}/>
+    }
+
+    //or destructure props in component argument
+    const Input = ({ type, placeholder, name, changeHandler }) => {
+    return <input 
+    type={type} 
+    placeholder={placeholder} 
+    name={name} 
+    className="block p-2 my-2 text-black" 
+    onChange={changeHandler}/>
+    }
+
+
+
+4. Have one file for each component
+- follows 'single responsiblity principle'
+- helps to reuse components and scale them individually
+
+
+
+5. Don't use inline functions 
+- keep your JSX separate from yout logical code 
+- avoid inline functions since they are not reusuable, don't help with code abstraction and are hard to test
+- e.g
+    // Don't do this;
+
+    import { useState } from "react";
+
+    function CounterInline(){
+        const [count, setCount] = useState(0);
+
+        const handleIncrement = () => {
+            setCount(count + 1);
+        }
+
+        return(
+            <div>
+                <p>Count:{count}</p>
+                <button onClick={handleIncrement}>Increment</button>
+            </div>
+        )
+    } 
+
+    export default CounterInline;
+
+    // Do this instead;
+
+    import { useState } from "react";
+
+    // standalone function for incrementing
+    function incrementCount(currentCount,setCount){
+        setCount(currentCount + 1);
+    }
+
+    const CounterInline = () => {
+        const [count, setCount] = useState(0);
+
+        return(
+            <div>
+                <p>Count:{count}</p>
+                <button onClick={() => incrementCount(count, setCount)}>Increase</button>
+            </div>
+        )
+    } 
+
+    export default CounterInline;
+
+
+
+6. Implement a 404 component and route
+
+
+
+7. Fetch data progressively
+- instead of fetching and creating the UI in one go, we should fetch the data on demand-for scrolling into view, clicking on the pagination
+    and so on.
+- will improve the performance of the application as well as the User Experience
+- lazy loading is a technique you can use to load the data on-demand or progressively as need 
+- to install lazy load package
+    > npm install react lazy-load
+- example:
+    // ItemList.jsx
+    import { useEffect, useState } from "react";
+
+    const ItemList = () => {
+        const [items, setItems] = useState([]);
+
+        useEffect(() => {
+            //fetch data from your API here
+            axios.get('https://example.com/api/items')
+            .then(response => {
+                setItems(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+        }, []);
+        return (
+            <div>
+                <h2> Item list</h2>
+                <ul>
+                    {items.map(item => {
+                        <li key={item.id}>
+                            {item.name}
+                        </li>
+                    })}
+                </ul>
+            </div>
+        )
+    }
+
+    export default ItemList;
+
+//App.jsx
+    // import the lazy-loaded component
+    const ItemList = lazy(() => import('./ItemList'));
+
+    function App(){
+        return(
+            <div>
+                <h1>React Lazyload with API data example</h1>
+                {/* Use React Lazyload to lazy-load the component*/}
+                <LazyLoad height={200}>
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <ItemList/>
+                    </Suspense>
+                </LazyLoad>
+            </div>
+        )
+}
+
+- In above example we created a component which will make the API requests and render the API data "ItemList.jsx"
+- while using the ItemList in App, instead of rendering the whole data in one go, we will use the LazyLoad to load the component.
+    As a result the component is lazy loaded when it's close to being visible in the viewport and the data from the API will be displayed
+
+
+8. Use Unique values for key attributes
+- react only updates nodes that get changed and not the whole DOM unless it is required.
+- react needs a "key" attribute to identify to which node the change happened. this is why we should always use a unique value for key
+- a good example of how to do this is to add the 'id' of every item
+Note: use index as a key only when your data is static, not re-ordering or filtered
+- example:
+
+    //List.jsx
+    import React from 'react';
+
+    const List = ({items}) => {
+        return(
+            <ul>
+                {items.map((item, index) => (
+                    <li key={index}>
+                        {item}
+                    </li>
+                ))}
+            </ul>
+        )
+    }
+
+    export default List;
+
+    //App.jsx   
+    import List from './List';
+
+    const App = () => {
+        const items = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
+
+        return(
+            <div>
+                <h1>Simple List Example</h1>
+                <List items={items} />
+            </div>
+        )
+    }
+
+    export default App;
+
+
+9. Use Types
+- using tools with static type checking built in (like TypeScript) can help avoid unnecessary bugs in the code, will also support your
+    code with quality and type-checking
+- start with proptypes and then learn TypeScript
+- js is not strictly typed which means there's higher possibility of unexpected bugs or type errors. for example, when we expect a prop
+    to be a number, it could end up being a string which could cause error
+- example
+    import React from 'react';
+    import PropTypes from 'prop-types';
+
+    const UserCard = ({ name, age, email }) => {
+    return (
+        <div>
+        <h2>User Card</h2>
+        <p>Name: {name}</p>
+        <p>Age: {age}</p>
+        <p>Email: {email}</p>
+        </div>
+    );
+    };
+    
+    // proptypes example
+    import UserCard from './UserCard';
+
+    const App = () => {
+    return (
+        <div>
+        <h1>PropTypes Example</h1>
+        <UserCard name='8' age={30} email="john@example.com" />
+        </div>
+    );
+    };
+
+    export default App;
+
+        // Define the prop types for the UserCard component
+        UserCard.propTypes = {
+        name: PropTypes.string.isRequired, // A required string prop
+        age: PropTypes.number.isRequired,  // A required number prop
+        email: PropTypes.string,           // An optional string prop
+        };
+
+        export default UserCard;
+

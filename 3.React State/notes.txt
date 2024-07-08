@@ -1,0 +1,18 @@
+# State:
+-> a collection of information or objects that tell you where you can access and store your data
+-> anything outside of a component, for example can't access its data. it's private and controlled by the component
+-> every react component has its own state
+    - whenever a state changes, the component get re-rendered
+    - this happens when a user clicks a button, responds or interact with something on the page
+-> the children components can access these states via props passed by the parent's component
+-> example  
+    const[name, setName] = useState("")
+    const[age, setAge] = useState(0)
+    const[products, setProducts] = useState(["rice","beans"])
+
+-> a state can be an array, string, object or number
+-> the useState hook accepts the initial value of the state as a parameter, and the state name and state function( for modifying its value)
+    are destructed from the useState hook
+    syntax:
+        const[stateName, stateFunction] = useState(<initial_value>)
+        

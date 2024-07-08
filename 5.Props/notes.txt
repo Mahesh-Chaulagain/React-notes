@@ -1,0 +1,51 @@
+# Props:
+-> data transferred from a parent to a child component
+-> can't be modified because they are read-only
+-> example:
+     const App = () => {
+        const [darkMode, setDarkMode] = useState(false);
+         return (
+             <div>
+                 <Home darkMode={darkMode} />
+                 <Profile darkMode={darkMode} setDarkMode={setDarkMode}/>
+             </div>
+         );
+     };
+     export default App
+
+    here the Home and Profile components accept the darkMode state and its function as props
+    
+-> to access the prop values within these components use a method called Destructuring 
+
+# Destructuring  props in React
+-> Props Destructuring  is a simple phenomenom similar to how we get object values in javascript
+-> with js get the values of each property using the objectName.<propertyName>:
+    const profile = {
+         name: "ram sharma",
+         age: 23,
+         role: "writer"
+    };
+    console.log(profile.name);
+    console.log(profile.age);
+    console.log(profile.role);
+
+-> Destructuring provides a better and much cleaner way of getting the values within an object or array
+    const profile = {
+    name: "ram sharma",
+    age: 23,
+    role: "writer"
+    };
+
+    // destructuring  the object
+    const { name, age, role } = profile;
+    console.log(`my name is ${name}. i am a ${role} and ${age} years old`);
+
+    const friends = ["rohan", "sita", "hari"];
+    // destructuring  the array
+    const [first, second, third] = friends;
+    console.log(first)
+
+-> every react component has a default props object that enables data sharing between components and
+    you can access the props values using destructuring methods
+
+    

@@ -1,0 +1,34 @@
+# Event Handlers:
+-> determines which action is performed when the user interacts with them
+-> in react, event handlers are written in camelCase form like: onClick, onChange and so on
+-> in HTML
+    <button onclick = "handleClick()">
+        you clicked a button
+    </button>
+-> in React:
+    <button onClick={handleClick}>
+        you clicked a button
+    </button>
+
+-> in React, you need to use event handlers when submitting a form and modifying the value of a state
+-> example:
+    export default function App(){
+    const [todo, setTodo] = useState("");
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log({todo});
+    };
+
+    return(
+        <div>
+            <h1>
+                Todo list
+            </h1>
+            <form action="" onSubmit={handleSubmit}>
+                <input type="text" name="todo" id="todo" value={todo} onChange={(e) => setTodo(e.target.value)} required/>
+                <button type="submit">Add Todo</button>
+            </form>
+        </div>
+    )
+}

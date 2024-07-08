@@ -1,0 +1,43 @@
+# JSX:
+- stands for Javascript Syntax Extension which lets you use HTML-like syntax in your react components
+- every components you see uses JSX
+- can easily embed js into JSX
+- gives flexibility to build fast UIs
+- a function called "React.createElement()" enables us to create JSX elements in react and it accepts threee arguments
+    1. the HTML element 
+    2. an object containing HTML element's attribute
+    3. content of the HTML element
+    e.g
+        React.createElement(
+            'button',
+            {
+                color: 'white', backgroundColor: 'blue'
+            },
+            'Click Here'
+        )
+    [ you don't need to use the 'React.createElement()' function because it creates alot of unnecessary line of codes and will be 
+    difficult to create deeply nested JSX elements]
+
+- react provides an easier way of writing JSX elements. They are similar to HTML elements and accept an attribute called 'className'
+    that replaces the class attribute in HTML
+- two rules concerning the JSX elements
+    1. 'class' is a js keyword. therefore use 'className' instead of class when styling your jsx elements
+    2. a component can only return one JSX element. but when you need to display more than one jsx element, put them in a single 
+        container element
+
+- example that returns a single JSX element
+    function Greeting(){
+    return (
+        <h1 className="heading">Welcome to React</h1>
+    )
+    }
+
+- example that returns multiple JSX elements
+    function Greeting(){
+    return (
+        <div>
+        <h1 className="heading">Welcome to React</h1>
+        <p> this is a message from the web</p>
+        </div>
+    )
+    }

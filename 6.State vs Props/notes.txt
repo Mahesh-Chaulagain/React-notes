@@ -1,0 +1,31 @@
+# State vs Props
+-> state and props are used for holding data within a React application. but they serve different purposes
+-> state are mutable and props are immutable i.e data stored in a state can be modified while props can not be modified(read-only)
+-> when you declare a state, react allows you to create a function that modifies the state value
+-> states becomes props(read-only) when you pass them into other components
+-> states are local to the component while props are from a parent component
+-> example:
+    const App = () => {
+    //state
+    const[name, setName] = useState('rai');
+    //modify state
+    const changeName = () => setName('hari');
+
+    return(
+        <div>
+            <Profile name={name}/>
+            <button onClick={changeName}>click me</button>
+        </div>
+    );
+    };
+
+    //accepts name as props
+    const Profile = ({ name }) => {
+        return(
+            <div>
+                <h1>hi i'm {name}</h1>
+                <p>welcome to all</p>
+            </div>
+        )
+    }
+    export default App
