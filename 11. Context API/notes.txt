@@ -1,0 +1,73 @@
+# Context API
+-> in react,data is typically passed down from parent to child via props which can lead to prop drilling - pass props down through lots
+    of components to get them where they're needed
+-> Context is designed to share data that can be considered "global" for a tree of react components
+-> useful for managing global state or state that is needed by many components at different nesting levels
+-> good practice is to create the context in its own file i.e src -> contexts
+-> prop drilling example:
+    import { useState } from 'react'
+
+    function App() {
+    const theme = 'light'
+    return <Parent theme={theme} />
+    }
+
+    function Parent({theme}){
+    return <Child theme={theme} />
+
+    }
+
+    function Child({theme}){
+    return <Button theme={theme} />
+    }
+
+    function Button({theme}){
+    return <button style={{background: theme === 'dark'?'black':'white'}}>Click me</button>
+    }
+
+    export default App;
+
+-> context API example:
+    // creating a context
+    import { createContext } from "react";
+
+    export const themes = {
+        light:{
+            background:"white",
+            text:"black",
+        },
+        dark:{
+            background:"black",
+            text:"white",
+        },
+    };
+
+    export const ThemeContext = createContext(themes.light)
+
+    // providing a context using context Provider
+    import React, { useState } from 'react'
+    import { ThemeContext, themes } from './contexts/ThemeContext'
+    import Navbar from './components/Navbar'
+    import Button from './components/Button'
+
+
+    const App = () => {
+    const [theme, setTheme] = useState(theme.lighe)
+    const toggleTheme = () => {
+        setTheme(state => (state === themes.light ? themes.dark : themes.light))
+    }
+
+    return (
+        <div className='App'>
+        {/* make theme and setTheme () available throughout our app via context */}
+        <ThemeContext.Provider value={(theme,setTheme)}>
+            <Navbar />
+            <Button chaneTheme={toggleTheme} />
+        </ThemeContext.Provider>
+        </div>
+    )
+    }
+
+    export default App;
+
+    // consume the theme context using the useContext() hook
